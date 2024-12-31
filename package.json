@@ -7,7 +7,6 @@
         "lint": "turbo lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "build:production": "turbo build && build-productions --archive",
-        "gitMsgLint": "commit-msg-linter",
         "prepare": "husky"
     },
     "devDependencies": {
