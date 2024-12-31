@@ -1,18 +1,23 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "build:production": "turbo build && build-productions --archive"
-  },
-  "devDependencies": {
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "turbo": "^2.3.3",
-    "@repo/cli": "workspace:*"
-  },
-  "packageManager": "pnpm@8.15.6",
-  "name": "with-vite"
+    "private": true,
+    "scripts": {
+        "build": "turbo build",
+        "test": "turbo test",
+        "dev": "turbo dev",
+        "lint": "turbo lint",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "build:production": "turbo build && build-productions --archive",
+        "prepare": "husky"
+    },
+    "devDependencies": {
+        "@repo/cli": "workspace:*",
+        "eslint": "^8.57.0",
+        "git-commit-msg-linter": "^5.0.8",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.3.0",
+        "prettier": "^3.2.5",
+        "turbo": "^2.3.3"
+    },
+    "packageManager": "pnpm@8.15.6",
+    "name": "with-vite"
 }
