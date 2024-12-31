@@ -1,12 +1,6 @@
 {
   "extends": "@repo/typescript-config/vite.json",
   "compilerOptions": {
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
     "baseUrl": ".",
     "paths": {
       "@/*": [
