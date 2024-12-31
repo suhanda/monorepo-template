@@ -19,5 +19,9 @@
     "turbo": "^2.3.3"
   },
   "packageManager": "pnpm@8.15.6",
-  "name": "with-vite"
+  "name": "monorepo-template",
+  "lint-staged": {
+    "*": "prettier --write",
+    "*.ts(x)?": "eslint --fix"
+  }
 }
