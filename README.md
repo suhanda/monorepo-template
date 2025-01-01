@@ -17,9 +17,9 @@ This Turborepo includes the following packages and apps:
 ### Apps and Packages
 
 - `web`: another [React](https://react.dev/) [vite](https://vitejs.dev) ts app
-- [tanstack](https://tanstack.com/) router
-- [tanstack](https://tanstack.com/) query
-- [tailwind](https://tailwindcss.com/)
+  - [tanstack](https://tanstack.com/) router
+  - [tanstack](https://tanstack.com/) query
+  - [tailwind](https://tailwindcss.com/)
 - `@repo/eslint-config`: shared `eslint` configurations
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 - `@repo/jest-config`: `jest` base configurations for monorepo
