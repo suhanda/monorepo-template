@@ -1,5 +1,5 @@
 import { lazy } from "react";
 
-const LazyMainLayout = lazy(() => import("./MainLayout"));
+const MainLayoutLazy = lazy(() => import("./MainLayout"));
 
-export default LazyMainLayout;
+export default MainLayoutLazy;

@@ -1,6 +1,6 @@
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 
-import LazyMainLayout from "@/layouts/MainLayout";
+import MainLayoutLazy from "@/layouts/MainLayout";
 
 import { NotFoundLazy } from "@/views/not-found";
 import { QueryClient } from "@tanstack/react-query";
@@ -18,8 +18,8 @@ export const Route = createRootRouteWithContext<MainRouterContext>()({
 
 function RootComponent() {
   return (
-    <LazyMainLayout>
+    <MainLayoutLazy>
       <Outlet />
-    </LazyMainLayout>
+    </MainLayoutLazy>
   );
 }
