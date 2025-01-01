@@ -1,18 +1,19 @@
 {
-    "extends": ["stylelint-config-standard"],
-    "plugins": ["stylelint-order"],
-    "overrides": [
-        {
-            "files": ["*.css"],
-            "extends": ["stylelint-config-tailwindcss"]
-        },
-        {
-            "files": ["*.scss"],
-            "extends": ["stylelint-config-standard-scss"]
-        }
-    ],
-    "rules": {
-        "order/order": ["custom-properties", "declarations"],
-        "order/properties-alphabetical-order": true
+  "schema": "https://json.schemastore.org/stylelintrc",
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-order"],
+  "overrides": [
+    {
+      "files": ["*.css"],
+      "extends": ["stylelint-config-tailwindcss"]
+    },
+    {
+      "files": ["*.scss"],
+      "extends": ["stylelint-config-standard-scss"]
     }
+  ],
+  "rules": {
+    "order/order": ["custom-properties", "declarations"],
+    "order/properties-alphabetical-order": true
+  }
 }
