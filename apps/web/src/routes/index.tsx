@@ -1,7 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: HomeComponent,
   beforeLoad: async ({ context }) => {
     if (context.authState.isAuthenticated) {
       throw redirect({
@@ -13,11 +12,3 @@ export const Route = createFileRoute("/")({
     });
   },
 });
-
-function HomeComponent() {
-  return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
-  );
-}
