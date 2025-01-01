@@ -1,5 +1,5 @@
 import { useAuth } from "@/core/context/auth";
-import { LoginViewLazy } from "@/views/login";
+import { LoginViewLazy } from "@/features/login";
 import { createLazyFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/login/")({
