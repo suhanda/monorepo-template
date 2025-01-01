@@ -4,9 +4,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {
@@ -14,13 +12,6 @@
       }
     ]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "dev-dist"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/core/context/querytsx"],
+  "exclude": ["node_modules", "dist", "dev-dist"]
 }

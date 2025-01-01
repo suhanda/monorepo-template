@@ -8,238 +8,305 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from "@tanstack/react-router";
+
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as UsersManagementImport } from './routes/users-management'
-import { Route as IndexImport } from './routes/index'
-import { Route as UsersManagementIndexImport } from './routes/users-management/index'
-import { Route as LoginIndexImport } from './routes/login/index'
-import { Route as DashboardIndexImport } from './routes/dashboard/index'
-import { Route as UsersManagementCreateIndexImport } from './routes/users-management/create/index'
-import { Route as UsersManagementUserIdIndexImport } from './routes/users-management/$userId/index'
-import { Route as UsersManagementUserIdEditImport } from './routes/users-management/$userId/edit'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as AuthenticatedImport } from "./routes/_authenticated";
+import { Route as IndexImport } from "./routes/index";
+import { Route as AuthenticatedUsersManagementIndexImport } from "./routes/_authenticated/users-management/index";
+import { Route as AuthenticatedUsersManagementCreateImport } from "./routes/_authenticated/users-management/create";
+import { Route as AuthenticatedUsersManagementUserIdImport } from "./routes/_authenticated/users-management/$userId";
+import { Route as AuthenticatedUsersManagementUserIdEditImport } from "./routes/_authenticated/users-management/$userId.edit";
+
+// Create Virtual Routes
+
+const LoginIndexLazyImport = createFileRoute("/login/")();
+const AuthenticatedUsersManagementLazyImport = createFileRoute(
+  "/_authenticated/users-management",
+)();
+const AuthenticatedDashboardIndexLazyImport = createFileRoute(
+  "/_authenticated/dashboard/",
+)();
 
 // Create/Update Routes
 
-const UsersManagementRoute = UsersManagementImport.update({
-  id: '/users-management',
-  path: '/users-management',
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: "/_authenticated",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
-const UsersManagementIndexRoute = UsersManagementIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => UsersManagementRoute,
-} as any)
-
-const LoginIndexRoute = LoginIndexImport.update({
-  id: '/login/',
-  path: '/login/',
+const LoginIndexLazyRoute = LoginIndexLazyImport.update({
+  id: "/login/",
+  path: "/login/",
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import("./routes/login/index.lazy").then((d) => d.Route));
 
-const DashboardIndexRoute = DashboardIndexImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthenticatedUsersManagementLazyRoute =
+  AuthenticatedUsersManagementLazyImport.update({
+    id: "/users-management",
+    path: "/users-management",
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import("./routes/_authenticated/users-management.lazy").then(
+      (d) => d.Route,
+    ),
+  );
 
-const UsersManagementCreateIndexRoute = UsersManagementCreateIndexImport.update(
-  {
-    id: '/create/',
-    path: '/create/',
-    getParentRoute: () => UsersManagementRoute,
-  } as any,
-)
+const AuthenticatedDashboardIndexLazyRoute =
+  AuthenticatedDashboardIndexLazyImport.update({
+    id: "/dashboard/",
+    path: "/dashboard/",
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import("./routes/_authenticated/dashboard/index.lazy").then((d) => d.Route),
+  );
 
-const UsersManagementUserIdIndexRoute = UsersManagementUserIdIndexImport.update(
-  {
-    id: '/$userId/',
-    path: '/$userId/',
-    getParentRoute: () => UsersManagementRoute,
-  } as any,
-)
+const AuthenticatedUsersManagementIndexRoute =
+  AuthenticatedUsersManagementIndexImport.update({
+    id: "/",
+    path: "/",
+    getParentRoute: () => AuthenticatedUsersManagementLazyRoute,
+  } as any);
 
-const UsersManagementUserIdEditRoute = UsersManagementUserIdEditImport.update({
-  id: '/$userId/edit',
-  path: '/$userId/edit',
-  getParentRoute: () => UsersManagementRoute,
-} as any)
+const AuthenticatedUsersManagementCreateRoute =
+  AuthenticatedUsersManagementCreateImport.update({
+    id: "/create",
+    path: "/create",
+    getParentRoute: () => AuthenticatedUsersManagementLazyRoute,
+  } as any);
+
+const AuthenticatedUsersManagementUserIdRoute =
+  AuthenticatedUsersManagementUserIdImport.update({
+    id: "/$userId",
+    path: "/$userId",
+    getParentRoute: () => AuthenticatedUsersManagementLazyRoute,
+  } as any);
+
+const AuthenticatedUsersManagementUserIdEditRoute =
+  AuthenticatedUsersManagementUserIdEditImport.update({
+    id: "/edit",
+    path: "/edit",
+    getParentRoute: () => AuthenticatedUsersManagementUserIdRoute,
+  } as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/users-management': {
-      id: '/users-management'
-      path: '/users-management'
-      fullPath: '/users-management'
-      preLoaderRoute: typeof UsersManagementImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/login/': {
-      id: '/login/'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/users-management/': {
-      id: '/users-management/'
-      path: '/'
-      fullPath: '/users-management/'
-      preLoaderRoute: typeof UsersManagementIndexImport
-      parentRoute: typeof UsersManagementImport
-    }
-    '/users-management/$userId/edit': {
-      id: '/users-management/$userId/edit'
-      path: '/$userId/edit'
-      fullPath: '/users-management/$userId/edit'
-      preLoaderRoute: typeof UsersManagementUserIdEditImport
-      parentRoute: typeof UsersManagementImport
-    }
-    '/users-management/$userId/': {
-      id: '/users-management/$userId/'
-      path: '/$userId'
-      fullPath: '/users-management/$userId'
-      preLoaderRoute: typeof UsersManagementUserIdIndexImport
-      parentRoute: typeof UsersManagementImport
-    }
-    '/users-management/create/': {
-      id: '/users-management/create/'
-      path: '/create'
-      fullPath: '/users-management/create'
-      preLoaderRoute: typeof UsersManagementCreateIndexImport
-      parentRoute: typeof UsersManagementImport
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_authenticated": {
+      id: "/_authenticated";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthenticatedImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_authenticated/users-management": {
+      id: "/_authenticated/users-management";
+      path: "/users-management";
+      fullPath: "/users-management";
+      preLoaderRoute: typeof AuthenticatedUsersManagementLazyImport;
+      parentRoute: typeof AuthenticatedImport;
+    };
+    "/login/": {
+      id: "/login/";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginIndexLazyImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_authenticated/users-management/$userId": {
+      id: "/_authenticated/users-management/$userId";
+      path: "/$userId";
+      fullPath: "/users-management/$userId";
+      preLoaderRoute: typeof AuthenticatedUsersManagementUserIdImport;
+      parentRoute: typeof AuthenticatedUsersManagementLazyImport;
+    };
+    "/_authenticated/users-management/create": {
+      id: "/_authenticated/users-management/create";
+      path: "/create";
+      fullPath: "/users-management/create";
+      preLoaderRoute: typeof AuthenticatedUsersManagementCreateImport;
+      parentRoute: typeof AuthenticatedUsersManagementLazyImport;
+    };
+    "/_authenticated/users-management/": {
+      id: "/_authenticated/users-management/";
+      path: "/";
+      fullPath: "/users-management/";
+      preLoaderRoute: typeof AuthenticatedUsersManagementIndexImport;
+      parentRoute: typeof AuthenticatedUsersManagementLazyImport;
+    };
+    "/_authenticated/dashboard/": {
+      id: "/_authenticated/dashboard/";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof AuthenticatedDashboardIndexLazyImport;
+      parentRoute: typeof AuthenticatedImport;
+    };
+    "/_authenticated/users-management/$userId/edit": {
+      id: "/_authenticated/users-management/$userId/edit";
+      path: "/edit";
+      fullPath: "/users-management/$userId/edit";
+      preLoaderRoute: typeof AuthenticatedUsersManagementUserIdEditImport;
+      parentRoute: typeof AuthenticatedUsersManagementUserIdImport;
+    };
   }
 }
 
 // Create and export the route tree
 
-interface UsersManagementRouteChildren {
-  UsersManagementIndexRoute: typeof UsersManagementIndexRoute
-  UsersManagementUserIdEditRoute: typeof UsersManagementUserIdEditRoute
-  UsersManagementUserIdIndexRoute: typeof UsersManagementUserIdIndexRoute
-  UsersManagementCreateIndexRoute: typeof UsersManagementCreateIndexRoute
+interface AuthenticatedUsersManagementUserIdRouteChildren {
+  AuthenticatedUsersManagementUserIdEditRoute: typeof AuthenticatedUsersManagementUserIdEditRoute;
 }
 
-const UsersManagementRouteChildren: UsersManagementRouteChildren = {
-  UsersManagementIndexRoute: UsersManagementIndexRoute,
-  UsersManagementUserIdEditRoute: UsersManagementUserIdEditRoute,
-  UsersManagementUserIdIndexRoute: UsersManagementUserIdIndexRoute,
-  UsersManagementCreateIndexRoute: UsersManagementCreateIndexRoute,
+const AuthenticatedUsersManagementUserIdRouteChildren: AuthenticatedUsersManagementUserIdRouteChildren =
+  {
+    AuthenticatedUsersManagementUserIdEditRoute:
+      AuthenticatedUsersManagementUserIdEditRoute,
+  };
+
+const AuthenticatedUsersManagementUserIdRouteWithChildren =
+  AuthenticatedUsersManagementUserIdRoute._addFileChildren(
+    AuthenticatedUsersManagementUserIdRouteChildren,
+  );
+
+interface AuthenticatedUsersManagementLazyRouteChildren {
+  AuthenticatedUsersManagementUserIdRoute: typeof AuthenticatedUsersManagementUserIdRouteWithChildren;
+  AuthenticatedUsersManagementCreateRoute: typeof AuthenticatedUsersManagementCreateRoute;
+  AuthenticatedUsersManagementIndexRoute: typeof AuthenticatedUsersManagementIndexRoute;
 }
 
-const UsersManagementRouteWithChildren = UsersManagementRoute._addFileChildren(
-  UsersManagementRouteChildren,
-)
+const AuthenticatedUsersManagementLazyRouteChildren: AuthenticatedUsersManagementLazyRouteChildren =
+  {
+    AuthenticatedUsersManagementUserIdRoute:
+      AuthenticatedUsersManagementUserIdRouteWithChildren,
+    AuthenticatedUsersManagementCreateRoute:
+      AuthenticatedUsersManagementCreateRoute,
+    AuthenticatedUsersManagementIndexRoute:
+      AuthenticatedUsersManagementIndexRoute,
+  };
+
+const AuthenticatedUsersManagementLazyRouteWithChildren =
+  AuthenticatedUsersManagementLazyRoute._addFileChildren(
+    AuthenticatedUsersManagementLazyRouteChildren,
+  );
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedUsersManagementLazyRoute: typeof AuthenticatedUsersManagementLazyRouteWithChildren;
+  AuthenticatedDashboardIndexLazyRoute: typeof AuthenticatedDashboardIndexLazyRoute;
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedUsersManagementLazyRoute:
+    AuthenticatedUsersManagementLazyRouteWithChildren,
+  AuthenticatedDashboardIndexLazyRoute: AuthenticatedDashboardIndexLazyRoute,
+};
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/users-management': typeof UsersManagementRouteWithChildren
-  '/dashboard': typeof DashboardIndexRoute
-  '/login': typeof LoginIndexRoute
-  '/users-management/': typeof UsersManagementIndexRoute
-  '/users-management/$userId/edit': typeof UsersManagementUserIdEditRoute
-  '/users-management/$userId': typeof UsersManagementUserIdIndexRoute
-  '/users-management/create': typeof UsersManagementCreateIndexRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthenticatedRouteWithChildren;
+  "/users-management": typeof AuthenticatedUsersManagementLazyRouteWithChildren;
+  "/login": typeof LoginIndexLazyRoute;
+  "/users-management/$userId": typeof AuthenticatedUsersManagementUserIdRouteWithChildren;
+  "/users-management/create": typeof AuthenticatedUsersManagementCreateRoute;
+  "/users-management/": typeof AuthenticatedUsersManagementIndexRoute;
+  "/dashboard": typeof AuthenticatedDashboardIndexLazyRoute;
+  "/users-management/$userId/edit": typeof AuthenticatedUsersManagementUserIdEditRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardIndexRoute
-  '/login': typeof LoginIndexRoute
-  '/users-management': typeof UsersManagementIndexRoute
-  '/users-management/$userId/edit': typeof UsersManagementUserIdEditRoute
-  '/users-management/$userId': typeof UsersManagementUserIdIndexRoute
-  '/users-management/create': typeof UsersManagementCreateIndexRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthenticatedRouteWithChildren;
+  "/login": typeof LoginIndexLazyRoute;
+  "/users-management/$userId": typeof AuthenticatedUsersManagementUserIdRouteWithChildren;
+  "/users-management/create": typeof AuthenticatedUsersManagementCreateRoute;
+  "/users-management": typeof AuthenticatedUsersManagementIndexRoute;
+  "/dashboard": typeof AuthenticatedDashboardIndexLazyRoute;
+  "/users-management/$userId/edit": typeof AuthenticatedUsersManagementUserIdEditRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/users-management': typeof UsersManagementRouteWithChildren
-  '/dashboard/': typeof DashboardIndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/users-management/': typeof UsersManagementIndexRoute
-  '/users-management/$userId/edit': typeof UsersManagementUserIdEditRoute
-  '/users-management/$userId/': typeof UsersManagementUserIdIndexRoute
-  '/users-management/create/': typeof UsersManagementCreateIndexRoute
+  __root__: typeof rootRoute;
+  "/": typeof IndexRoute;
+  "/_authenticated": typeof AuthenticatedRouteWithChildren;
+  "/_authenticated/users-management": typeof AuthenticatedUsersManagementLazyRouteWithChildren;
+  "/login/": typeof LoginIndexLazyRoute;
+  "/_authenticated/users-management/$userId": typeof AuthenticatedUsersManagementUserIdRouteWithChildren;
+  "/_authenticated/users-management/create": typeof AuthenticatedUsersManagementCreateRoute;
+  "/_authenticated/users-management/": typeof AuthenticatedUsersManagementIndexRoute;
+  "/_authenticated/dashboard/": typeof AuthenticatedDashboardIndexLazyRoute;
+  "/_authenticated/users-management/$userId/edit": typeof AuthenticatedUsersManagementUserIdEditRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/users-management'
-    | '/dashboard'
-    | '/login'
-    | '/users-management/'
-    | '/users-management/$userId/edit'
-    | '/users-management/$userId'
-    | '/users-management/create'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | ""
+    | "/users-management"
+    | "/login"
+    | "/users-management/$userId"
+    | "/users-management/create"
+    | "/users-management/"
+    | "/dashboard"
+    | "/users-management/$userId/edit";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/dashboard'
-    | '/login'
-    | '/users-management'
-    | '/users-management/$userId/edit'
-    | '/users-management/$userId'
-    | '/users-management/create'
+    | "/"
+    | ""
+    | "/login"
+    | "/users-management/$userId"
+    | "/users-management/create"
+    | "/users-management"
+    | "/dashboard"
+    | "/users-management/$userId/edit";
   id:
-    | '__root__'
-    | '/'
-    | '/users-management'
-    | '/dashboard/'
-    | '/login/'
-    | '/users-management/'
-    | '/users-management/$userId/edit'
-    | '/users-management/$userId/'
-    | '/users-management/create/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/_authenticated"
+    | "/_authenticated/users-management"
+    | "/login/"
+    | "/_authenticated/users-management/$userId"
+    | "/_authenticated/users-management/create"
+    | "/_authenticated/users-management/"
+    | "/_authenticated/dashboard/"
+    | "/_authenticated/users-management/$userId/edit";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  UsersManagementRoute: typeof UsersManagementRouteWithChildren
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  LoginIndexRoute: typeof LoginIndexRoute
+  IndexRoute: typeof IndexRoute;
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
+  LoginIndexLazyRoute: typeof LoginIndexLazyRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  UsersManagementRoute: UsersManagementRouteWithChildren,
-  DashboardIndexRoute: DashboardIndexRoute,
-  LoginIndexRoute: LoginIndexRoute,
-}
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  LoginIndexLazyRoute: LoginIndexLazyRoute,
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -248,44 +315,54 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/users-management",
-        "/dashboard/",
+        "/_authenticated",
         "/login/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/users-management": {
-      "filePath": "users-management.tsx",
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
       "children": [
-        "/users-management/",
-        "/users-management/$userId/edit",
-        "/users-management/$userId/",
-        "/users-management/create/"
+        "/_authenticated/users-management",
+        "/_authenticated/dashboard/"
       ]
     },
-    "/dashboard/": {
-      "filePath": "dashboard/index.tsx"
+    "/_authenticated/users-management": {
+      "filePath": "_authenticated/users-management.lazy.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/users-management/$userId",
+        "/_authenticated/users-management/create",
+        "/_authenticated/users-management/"
+      ]
     },
     "/login/": {
-      "filePath": "login/index.tsx"
+      "filePath": "login/index.lazy.tsx"
     },
-    "/users-management/": {
-      "filePath": "users-management/index.tsx",
-      "parent": "/users-management"
+    "/_authenticated/users-management/$userId": {
+      "filePath": "_authenticated/users-management/$userId.tsx",
+      "parent": "/_authenticated/users-management",
+      "children": [
+        "/_authenticated/users-management/$userId/edit"
+      ]
     },
-    "/users-management/$userId/edit": {
-      "filePath": "users-management/$userId/edit.tsx",
-      "parent": "/users-management"
+    "/_authenticated/users-management/create": {
+      "filePath": "_authenticated/users-management/create.tsx",
+      "parent": "/_authenticated/users-management"
     },
-    "/users-management/$userId/": {
-      "filePath": "users-management/$userId/index.tsx",
-      "parent": "/users-management"
+    "/_authenticated/users-management/": {
+      "filePath": "_authenticated/users-management/index.tsx",
+      "parent": "/_authenticated/users-management"
     },
-    "/users-management/create/": {
-      "filePath": "users-management/create/index.tsx",
-      "parent": "/users-management"
+    "/_authenticated/dashboard/": {
+      "filePath": "_authenticated/dashboard/index.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/users-management/$userId/edit": {
+      "filePath": "_authenticated/users-management/$userId.edit.tsx",
+      "parent": "/_authenticated/users-management/$userId"
     }
   }
 }

@@ -1,13 +1,23 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-    component: HomeComponent,
+  component: HomeComponent,
+  beforeLoad: async ({ context }) => {
+    if (context.authState.isAuthenticated) {
+      throw redirect({
+        to: "/dashboard",
+      });
+    }
+    throw redirect({
+      to: "/login",
+    });
+  },
 });
 
 function HomeComponent() {
-    return (
-        <div className="p-2">
-            <h3>Welcome Home!</h3>
-        </div>
-    );
+  return (
+    <div className="p-2">
+      <h3>Welcome Home!</h3>
+    </div>
+  );
 }
