@@ -10,7 +10,10 @@
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Bundler"
   },
   "exclude": ["node_modules"]
 }

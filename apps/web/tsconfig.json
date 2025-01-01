@@ -1,4 +1,17 @@
 {
   "extends": "@repo/typescript-config/vite.json",
-  "include": ["src"]
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/core/context/querytsx"],
+  "exclude": ["node_modules", "dist", "dev-dist"]
 }
