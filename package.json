@@ -21,7 +21,7 @@
   "packageManager": "pnpm@8.15.6",
   "name": "monorepo-template",
   "lint-staged": {
-    "*": "prettier --write",
+    "*": "prettier --write && commit-msg-linter",
     "*.ts(x)?": "eslint --fix"
   }
 }
