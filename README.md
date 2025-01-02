@@ -1,6 +1,6 @@
 # `Turborepo` Vite starter
 
-This is an official starter Turborepo.
+This is an unofficial starter Turborepo, that modified for my needs. it is based on `with-vite` template
 
 ## Using this example
 
